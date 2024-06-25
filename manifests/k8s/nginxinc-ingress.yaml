@@ -1,0 +1,25 @@
+# https://github.com/nginxinc/kubernetes-ingress/issues/21
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: counter-request-app-ingress
+  namespace: counter-request
+  annotations:
+    nginx.org/client-max-body-size: "0"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: counter-request.apps.k8s.<base-domain>
+    http:
+      paths:
+      - backend:
+          service:
+            name: counter-request-app-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - counter-request.apps.k8s.<base-domain>
